@@ -12,7 +12,7 @@ from cuisine import *
 @parallel
 def install_common():
     ''':hostname - Install Hadoop Master'''
-    env.user = 'ubuntu'
+    env.user = 'root'
     env.disable_known_hosts = True
 
     file_name = '/usr/lib/jvm/java-7-oracle'
@@ -38,30 +38,6 @@ def install_common():
     for file_name in file_names:
         put('templates'+ file_name, file_name, use_sudo=True)
 
-    dir_name = '/var/lib/hdfs'
-    if not file_exists(dir_name):
-        sudo('mkdir {}'.format(dir_name))
-        sudo('chown hdfs:hdfs {}'.format(dir_name))
-
-    dir_name = '/root/.ssh'
-    if not os.path.exists('templates' + dir_name):
-        local('mkdir -p templates' + dir_name)
-        local('ssh-keygen -f templates/{}/id_rsa -P \'\' -C \'root_key\''.format(dir_name))
-        local('cat templates/{0}/id_rsa.pub > templates/{0}/authorized_keys'.format(dir_name))
-        #local('echo StrictHostKeyChecking no > templates/{}/config'.format(dir_name))
-        #local('echo UserKnownHostsFile=/dev/null >> templates/{}/config'.format(dir_name))
-
-    if not file_exists(dir_name):
-        sudo('mkdir {0} && chmod 700 {0}'.format(dir_name))
-        put('templates/{}'.format(dir_name), '/root/', use_sudo=True, mode=0640)
-        sudo('chmod 600 {}/id_rsa'.format(dir_name))
-        sudo('chown -R root:root {}'.format(dir_name))
-
-@task
-def install_master():
-
-    install_common()
-
 @task
 @parallel
 def enable_root_login():
@@ -74,22 +50,3 @@ def hello():
 
     run('hostname && id && echo hello')
 
-@task
-def nova_boot(tenant='fg368',
-        image='futuregrid/ubuntu-12.04',
-        flavor='m1.small',
-        key_name='ktanaka_deigo',
-        prefix='ktanaka',
-        number=5):
-
-    for a in range(number):
-        local('supernova {0} boot \
-                --image {1} \
-                --flavor {2} \
-                --key-name {3} \
-                {4}{5}'.format(tenant,
-                    image,
-                    flavor,
-                    key_name,
-                    prefix,
-                    a))
