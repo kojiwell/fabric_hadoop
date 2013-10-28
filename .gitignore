@@ -1,0 +1,7 @@
+*.pyc
+hosts
+*.xml
+hadoop-env.sh
+slaves
+masters
+.ssh
