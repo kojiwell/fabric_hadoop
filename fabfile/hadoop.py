@@ -16,7 +16,7 @@ def status():
     cfg = yaml.safe_load(f)
     f.close()
 
-    env.user = cfg['remote_user']
+    env.user = cfg['admin_user']
     env.disable_known_hosts = True
 
     hosts = []
@@ -37,7 +37,7 @@ def install():
     cfg = yaml.safe_load(f)
     f.close()
 
-    env.user = cfg['remote_user']
+    env.user = cfg['admin_user']
     env.disable_known_hosts = True
 
     hosts = []
