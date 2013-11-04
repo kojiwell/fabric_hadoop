@@ -22,9 +22,17 @@ def install():
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    execute(pkg_install,hosts=hosts)
-    execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
-    execute(update_roles,cfg_hosts=cfg['hosts'],hosts=hosts)
+    #execute(pkg_install,hosts=hosts)
+    #execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
+    #execute(update_roles,cfg_hosts=cfg['hosts'],hosts=hosts)
+    execute(update_config,cfg_name='core-site',cfg_list=cfg['core-site'],hosts=hosts)
+
+@task
+@parallel
+def update_config(cfg_name, cfg_list):
+    """ Update xml files """
+    print 'cfg_name = ' + cfg_name
+    print 'cfg_list = ' + cfg_list
 
 @task
 @parallel
