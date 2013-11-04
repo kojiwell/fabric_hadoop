@@ -21,7 +21,7 @@ def install():
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    execute(hello,hosts=hosts)
+    execute(pkg_install,hosts=hosts)
 
 @task
 @parallel
