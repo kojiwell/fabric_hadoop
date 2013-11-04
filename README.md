@@ -6,10 +6,11 @@ hadoop_startup
  ----------------------------------------------------------------------------
       | 192.168.1.1       | 192.168.1.2       | 192.168.1.3       | 192.168.1.XX
   +----------------+  +----------------+  +----------------+  +--------------
-  | node01         |  | node02         |  | node03         |  | nodeXX        
+  | node01[master] |  | node02[master] |  | node03[slave]  |  | nodeXX[slave] 
   | -------------- |  | -------------- |  | -------------- |  | ------------  
   | NameNode       |  | SecondNameNode |  | DataNode       |  | DataNode       
-  | JobTracker     |  |                |  | TaskTracker    |  | TaskTracker   
+  | SecondNameNode |  |                |  | TaskTracker    |  | TaskTracker   
+  | JobTracker     |  |                |  |                |  |               
   |                |  |                |  |                |  |               
   +----------------+  +----------------+  +----------------+  +--------------
 ```
