@@ -25,11 +25,23 @@ def install():
     #execute(pkg_install,hosts=hosts)
     #execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
     #execute(update_roles,cfg_hosts=cfg['hosts'],hosts=hosts)
-    sites = ['core-site',
-             'hdfs-site',
-             'mapred-site']
-    for site in sites:
-        execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
+    #sites = ['core-site',
+            #         'hdfs-site',
+             #         'mapred-site']
+    #for site in sites:
+        #    execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
+    @parallel
+    execute(file_update,'/usr/lib/hadoop/conf/hadoop-env.sh',update_env_sh,hosts=hosts)
+
+def update_env_sh(text):
+    """ Update /usr/lib/hadoop/conf/hadoop-env.sh"""
+    res = []
+    for line in text.split('\n'):
+        if line.strip().startswith("# export JAVA_HOME"):
+            res.append("export JAVA_HOME=/usr/lib/jvm/java-7-oracle")
+        else:
+            res.append(line)
+    return '\n'.join(res) + '\n'
 
 @task
 @parallel
