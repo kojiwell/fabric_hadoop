@@ -33,8 +33,8 @@ def install():
     #execute(update_env_sh,hosts=hosts)
     admin_node = cfg['admin_node']
     admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
-    key = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
-    print key
+    output = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
+    print "key = " + output[admin_node_ip]
 
 @task
 def create_hdfs_sshkey():
