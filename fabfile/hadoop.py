@@ -30,10 +30,16 @@ def install():
              #         'mapred-site']
     #for site in sites:
         #    execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
-    @parallel
-    execute(file_update,'/usr/lib/hadoop/conf/hadoop-env.sh',update_env_sh,hosts=hosts)
+    execute(update_env_sh,hosts=hosts)
 
-def update_env_sh(text):
+@task
+@parallel
+def update_env_sh():
+
+    file = '/usr/lib/hadoop/conf/hadoop-env.sh'
+    file_update(file, _sub_update_env_sh)
+
+def _sub_update_env_sh(text):
     """ Update /usr/lib/hadoop/conf/hadoop-env.sh"""
     res = []
     for line in text.split('\n'):
