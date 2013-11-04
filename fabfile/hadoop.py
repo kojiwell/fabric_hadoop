@@ -5,7 +5,8 @@ import yaml
 from fabric.api import task, run, sudo, put, task, \
         parallel, execute, env
 from cuisine import file_exists, file_write, file_append, \
-        text_strip_margin, mode_sudo, file_update, ssh_keygen
+        text_strip_margin, mode_sudo, file_update, ssh_keygen, \
+        ssh_authorize
 
 @task
 def install():
@@ -34,7 +35,8 @@ def install():
     admin_node = cfg['admin_node']
     admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
     output = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
-    print "key = " + output[admin_node_ip]
+    key = output[admin_node_ip]
+    execute(ssh_authorize,user='hdfs',key=key,hosts=hosts)
 
 @task
 def create_hdfs_sshkey():
