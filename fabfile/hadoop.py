@@ -30,11 +30,11 @@ def install():
              #         'mapred-site']
     #for site in sites:
         #    execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
-    execute(update_env_sh,hosts=hosts)
+    #execute(update_env_sh,hosts=hosts)
     admin_node = cfg['admin_node']
     admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
     key = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
-    print 'key = ' + key
+    print key
 
 @task
 def create_hdfs_sshkey():
