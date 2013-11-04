@@ -27,25 +27,36 @@ def install():
 @task
 @parallel
 def update_etc_hosts(cfg_hosts):
+    """Update /etc/hosts """
 
     file = '/etc/hosts'
-    text = text_strip_margin(
-            """
-            |127.0.0.1 localhost
-            |""")
+    #text = text_strip_margin(
+    #        """
+    #        |127.0.0.1 localhost
+    #        |""")
+    text = "127.0.0.1 localhost"
     file_write(file, text, sudo=True)
     for host in cfg_hosts:
-        text = text_strip_margin(
-                """
-                |{0} {1}
-                |""".format(cfg_hosts[host]['ipaddr'], host))
+        #text = text_strip_margin(
+        #        """
+        #        |{0} {1}
+        #        |""".format(cfg_hosts[host]['ipaddr'], host))
+        text = "{0} {1}".format(cfg_hosts[host]['ipaddr'], host))
         with mode_sudo():
             file_append(file, text)
 
 @task
 @parallel
+def update_masters(cfg_hosts):
+    """ Update /usr/lib/hadoop/conf/masters """
+
+    file = '/usr/lib/hadoop/conf/masters'
+
+
+@task
+@parallel
 def pkg_install():
-    ''':hostname - Install Hadoop Master'''
+     ''':hostname - Install Hadoop Master'''
     env.disable_known_hosts = True
 
     file_name = '/usr/lib/jvm/java-7-oracle'
