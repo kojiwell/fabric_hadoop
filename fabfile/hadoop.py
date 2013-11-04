@@ -22,7 +22,7 @@ def install():
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    execute(pkg_install,hosts=hosts)
+    #execute(pkg_install,hosts=hosts)
     execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
 
 @task
