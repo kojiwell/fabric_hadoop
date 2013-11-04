@@ -33,7 +33,8 @@ def install():
     execute(update_env_sh,hosts=hosts)
     admin_node = cfg['admin_node']
     admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
-    execute(ssh_keygen,user='hdfs',keytype='rsa',hosts=[admin_node_ip])
+    with mode_sudo():
+        execute(ssh_keygen,user='hdfs',keytype='rsa',hosts=[admin_node_ip])
 
 @task
 @parallel
