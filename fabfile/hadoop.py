@@ -45,12 +45,12 @@ def update_etc_hosts(cfg_hosts):
         with mode_sudo():
             file_append(file, text)
 
-@task
-@parallel
-def update_masters(cfg_hosts):
-    """ Update /usr/lib/hadoop/conf/masters """
-
-    file = '/usr/lib/hadoop/conf/masters'
+#@task
+#@parallel
+#def update_masters(cfg_hosts):
+#    """ Update /usr/lib/hadoop/conf/masters """
+#
+#    file = '/usr/lib/hadoop/conf/masters'
 
 
 @task
