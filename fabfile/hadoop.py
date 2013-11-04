@@ -47,7 +47,7 @@ def update_dir(update_dir_list):
         for dir in update_dir_list:
             owner = update_dir_list[dir]['owner']
             mode = update_dir_list[dir]['mode']
-            dir_ensure(dir, mode=mode, owner=owner, recursive=True)
+            dir_ensure(dir, mode=mode, owner=owner)
 
 @task
 @parallel
