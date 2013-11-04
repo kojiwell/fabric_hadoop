@@ -92,16 +92,16 @@ def update_env_sh():
     """ Update /usr/lib/hadoop/conf/hadoop-env.sh """
     file = '/usr/lib/hadoop/conf/hadoop-env.sh'
     with mode_sudo():
-        file_update(file, update_it)
+        file_update(file, _update_env_sh_like_this)
 
-    def update_it(text):
-        res = []
-        for line in text.split('\n'):
-            if line.strip().startswith("# export JAVA_HOME"):
-                res.append("export JAVA_HOME=/usr/lib/jvm/java-7-oracle")
-            else:
-                res.append(line)
-        return '\n'.join(res) + '\n'
+def _update_env_sh_like_this(text):
+    res = []
+    for line in text.split('\n'):
+        if line.strip().startswith("# export JAVA_HOME"):
+            res.append("export JAVA_HOME=/usr/lib/jvm/java-7-oracle")
+        else:
+            res.append(line)
+    return '\n'.join(res) + '\n'
 
 @parallel
 def update_config(cfg_name, cfg_list):
