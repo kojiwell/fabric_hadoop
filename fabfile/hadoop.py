@@ -9,8 +9,28 @@ from cuisine import file_exists, file_write, file_append, \
         ssh_authorize, dir_ensure
 
 @task
-def install():
+def status():
+    """ Check the status """
+    yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
+    f = open(yml_path)
+    cfg = yaml.safe_load(f)
+    f.close()
 
+    env.user = cfg['remote_user']
+    env.disable_known_hosts = True
+    env.parallel = True
+
+    hosts = []
+    for host in cfg['hosts']:
+        hosts.append(cfg['hosts'][host]['ipaddr'])
+
+    env.hosts = hosts
+
+    sudo('jps', user='hdfs')
+
+@task
+def install():
+    """ Install Hadoop Cluster """
     yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
     f = open(yml_path)
     cfg = yaml.safe_load(f)
@@ -39,7 +59,6 @@ def install():
     execute(update_authorized_keys,key=key,hosts=hosts)
     execute(update_dir,cfg['update_dir_list'],hosts=hosts)
 
-@task
 @parallel
 def update_dir(update_dir_list):
 
@@ -49,20 +68,17 @@ def update_dir(update_dir_list):
             mode = update_dir_list[dir]['mode']
             dir_ensure(dir, mode=mode, owner=owner)
 
-@task
 @parallel
 def update_authorized_keys(key):
     with mode_sudo():
         ssh_authorize(user='hdfs',key=key)
 
-@task
 def create_hdfs_sshkey():
     with mode_sudo():
         ssh_keygen(user='hdfs',keytype='rsa')
         key = sudo('cat /usr/lib/hadoop/.ssh/id_rsa.pub')
     return key
 
-@task
 @parallel
 def update_env_sh():
 
@@ -80,7 +96,6 @@ def _sub_update_env_sh(text):
             res.append(line)
     return '\n'.join(res) + '\n'
 
-@task
 @parallel
 def update_config(cfg_name, cfg_list):
     """ Update xml files """
@@ -114,7 +129,6 @@ def update_config(cfg_name, cfg_list):
     text = '\n'.join(lines) + '\n'
     file_write(file, text, sudo=True)
 
-@task
 @parallel
 def update_etc_hosts(cfg_hosts):
     """Update /etc/hosts """
@@ -127,7 +141,6 @@ def update_etc_hosts(cfg_hosts):
     text = '\n'.join(lines) + '\n'
     file_write(file, text, sudo=True)
 
-@task
 @parallel
 def update_roles(cfg_hosts):
     """ Update /usr/lib/hadoop/conf/[masters/slaves] """
@@ -149,7 +162,6 @@ def update_roles(cfg_hosts):
     text = '\n'.join(slaves) + '\n'
     file_write(file, text, sudo=True)
 
-@task
 @parallel
 def pkg_install():
     ''':hostname - Install Hadoop Master'''
