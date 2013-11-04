@@ -32,7 +32,7 @@ def install():
 def update_config(cfg_name, cfg_list):
     """ Update xml files """
     print 'cfg_name = ' + cfg_name
-    print 'cfg_list = ' + cfg_list
+    print cfg_list
 
 @task
 @parallel
