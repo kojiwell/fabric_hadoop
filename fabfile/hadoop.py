@@ -5,7 +5,7 @@ import yaml
 from fabric.api import task, run, sudo, put, task, \
         parallel, execute, env
 from cuisine import file_exists, file_write, file_append, \
-        text_strip_margin, mode_sudo
+        text_strip_margin, mode_sudo, file_update
 
 @task
 def install():
