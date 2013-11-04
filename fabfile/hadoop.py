@@ -16,6 +16,8 @@ def install():
     cfg = yaml.safe_load(f)
     f.close()
 
+    env.user = cfg['remote_user']
+
     hosts = []
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
