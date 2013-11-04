@@ -5,7 +5,7 @@ import yaml
 from fabric.api import task, run, sudo, put, task, \
         parallel, execute, env
 from cuisine import file_exists, file_write, file_append, \
-        text_strip_margin
+        text_strip_margin, mode_sudo
 
 @task
 def install():
@@ -39,7 +39,8 @@ def update_etc_hosts(cfg_hosts):
                 """
                 |{0} {1}
                 |""".format(cfg_hosts[host]['ipaddr'], host))
-        file_append(file, text, sudo=True)
+        with mode_sudo():
+            file_append(file, text)
 
 @task
 @parallel
