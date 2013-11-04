@@ -44,8 +44,10 @@ def _sub_update_env_sh(text):
     res = []
     for line in text.split('\n'):
         if line.strip().startswith("# export JAVA_HOME"):
+            print "### " + line.strip()
             res.append("export JAVA_HOME=/usr/lib/jvm/java-7-oracle")
         else:
+            print "###### " + line.strip()
             res.append(line)
     return '\n'.join(res) + '\n'
 
