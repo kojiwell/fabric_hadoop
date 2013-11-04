@@ -31,6 +31,12 @@ def install():
     #for site in sites:
         #    execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
     execute(update_env_sh,hosts=hosts)
+    admin_node = cfg['admin_node']
+    admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
+    execute(ssh_keygen,user='hdfs',keytype='rsa',hosts=[admin_node_ip])
+
+@task
+def key
 
 @task
 @parallel
@@ -134,17 +140,6 @@ def pkg_install():
         sudo('apt-get -y install hadoop')
     else:
         print '{0} exists. Oracle Java is already installed.'.format(file_name)
-
-    #file_names = [
-    #        '/etc/hosts',
-    #        '/usr/lib/hadoop/conf/core-site.xml',
-    #        '/usr/lib/hadoop/conf/hdfs-site.xml',
-    #        '/usr/lib/hadoop/conf/mapred-site.xml',
-    #        '/usr/lib/hadoop/conf/hadoop-env.sh',
-    #        '/usr/lib/hadoop/conf/slaves'
-    #        ]
-    #for file_name in file_names:
-    #    put('templates'+ file_name, file_name, use_sudo=True)
 
 @task
 @parallel
