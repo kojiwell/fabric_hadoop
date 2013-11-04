@@ -24,6 +24,7 @@ def install():
 
     execute(pkg_install,hosts=hosts)
     execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
+    execute(update_roles,cfg_hosts=cfg['hosts'],hosts=hosts)
 
 @task
 @parallel
@@ -40,10 +41,25 @@ def update_etc_hosts(cfg_hosts):
 
 @task
 @parallel
-def update_masters(cfg_hosts):
-    """ Update /usr/lib/hadoop/conf/masters """
+def update_roles(cfg_hosts):
+    """ Update /usr/lib/hadoop/conf/[masters/slaves] """
 
-    file = '/usr/lib/hadoop/conf/masters'
+    dir = '/usr/lib/hadoop/conf/'
+    masters = []
+    slaves = []
+    for host in cfg_hosts:
+        if cfg_hosts[host]['group'] == 'masters':
+            masters.append(host)
+        elif cfg_hosts[host]['group'] == 'slaves':
+            slaves.append(host)
+    # Update masters
+    file = dir + 'masters'
+    text = '\n'.join(masters) + '\n'
+    file_write(file, text, sudo=True)
+    # Update slaves
+    file = dir + 'slaves'
+    text = '\n'.join(slaves) + '\n'
+    file_write(file, text, sudo=True)
 
 @task
 @parallel
