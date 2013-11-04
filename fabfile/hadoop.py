@@ -4,8 +4,8 @@
 import yaml
 from fabric.api import task, run, sudo, put, task, \
         parallel, execute, env
-from cuisine import file_exists
-
+from cuisine import file_exists, file_write, file_append, \
+        text_strip_margin
 
 @task
 def install():
@@ -22,6 +22,24 @@ def install():
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
     execute(pkg_install,hosts=hosts)
+    execute(update_etc_hosts,hosts=hosts)
+
+@task
+@parallel
+def update_etc_hosts(cfg_hosts):
+
+    file = '/etc/hosts'
+    text = text_strip_margin(
+            """
+            |127.0.0.1 localhost
+            |""")
+    file_write(file, text, sudo=True)
+    for host in cfg_hosts:
+        text = text_strip_margin(
+                """
+                |{0} {1}
+                |""".format(cfg_hosts[host]['ipaddr'], host))
+        file_append(file, text, sudo=True)
 
 @task
 @parallel
