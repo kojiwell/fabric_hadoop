@@ -58,7 +58,6 @@ def update_etc_hosts(cfg_hosts):
 @parallel
 def pkg_install():
      ''':hostname - Install Hadoop Master'''
-
     file_name = '/usr/lib/jvm/java-7-oracle'
     if not file_exists(file_name):
         sudo('add-apt-repository -y ppa:webupd8team/java')
