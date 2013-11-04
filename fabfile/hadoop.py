@@ -16,6 +16,7 @@ def install():
     f.close()
 
     env.user = cfg['remote_user']
+    env.disable_known_hosts = True
 
     hosts = []
     for host in cfg['hosts']:
@@ -57,7 +58,6 @@ def update_etc_hosts(cfg_hosts):
 @parallel
 def pkg_install():
      ''':hostname - Install Hadoop Master'''
-    env.disable_known_hosts = True
 
     file_name = '/usr/lib/jvm/java-7-oracle'
     if not file_exists(file_name):
