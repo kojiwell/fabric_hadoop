@@ -3,7 +3,7 @@
  
 import yaml
 from fabric.api import task, run, sudo, put, task, \
-        parallel, execute
+        parallel, execute, env
 from cuisine import file_exists
 
 
@@ -15,13 +15,13 @@ def install():
     cfg = yaml.safe_load(f)
     f.close()
 
-    user = cfg['remote_user']
+    env.user = cfg['remote_user']
 
     hosts = []
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    execute(hello,user,hosts=hosts)
+    execute(hello,hosts=hosts)
 
 @task
 @parallel
@@ -59,8 +59,7 @@ def enable_root_login():
 
     sudo('cat .ssh/authorized_keys > /root/.ssh/authorized_keys')
 
-def hello(user):
+def hello():
 
-    env.user = user
     run('hostname && id && echo hello')
 
