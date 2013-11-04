@@ -22,7 +22,7 @@ def install():
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    #execute(pkg_install,hosts=hosts)
+    execute(pkg_install,hosts=hosts)
     execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
 
 @task
@@ -31,28 +31,19 @@ def update_etc_hosts(cfg_hosts):
     """Update /etc/hosts """
 
     file = '/etc/hosts'
-    #text = text_strip_margin(
-    #        """
-    #        |127.0.0.1 localhost
-    #        |""")
-    text = "127.0.0.1 localhost\n"
-    file_write(file, text, sudo=True)
+    lines = []
+    lines.append("127.0.0.1 localhost")
     for host in cfg_hosts:
-        #text = text_strip_margin(
-        #        """
-        #        |{0} {1}
-        #        |""".format(cfg_hosts[host]['ipaddr'], host))
-        text = "{0} {1}\n".format(cfg_hosts[host]['ipaddr'], host)
-        with mode_sudo():
-            file_append(file, text)
+        lines.append("{0} {1}".format(cfg_hosts[host]['ipaddr'], host))
+    text = '\n'.join(lines)
+    file_write(file, text, sudo=True)
 
-#@task
-#@parallel
-#def update_masters(cfg_hosts):
-#    """ Update /usr/lib/hadoop/conf/masters """
-#
-#    file = '/usr/lib/hadoop/conf/masters'
+@task
+@parallel
+def update_masters(cfg_hosts):
+    """ Update /usr/lib/hadoop/conf/masters """
 
+    file = '/usr/lib/hadoop/conf/masters'
 
 @task
 @parallel
