@@ -18,13 +18,15 @@ def status():
 
     env.user = cfg['remote_user']
     env.disable_known_hosts = True
-    env.parallel = True
 
     hosts = []
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    env.hosts = hosts
+    execute(check_status, hosts=hosts)
+
+@parallel
+def check_status():
 
     sudo('jps', user='hdfs')
 
