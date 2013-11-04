@@ -8,7 +8,6 @@ from cuisine import file_exists
 
 
 @task
-@parallel
 def install():
 
     yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
