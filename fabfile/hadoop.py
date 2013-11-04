@@ -27,16 +27,27 @@ def install():
     #execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
     #execute(update_roles,cfg_hosts=cfg['hosts'],hosts=hosts)
     #sites = ['core-site',
-            #         'hdfs-site',
-             #         'mapred-site']
+             #'hdfs-site',
+             #'mapred-site']
     #for site in sites:
-        #    execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
+        #execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
     #execute(update_env_sh,hosts=hosts)
-    admin_node = cfg['admin_node']
-    admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
-    output = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
-    key = output[admin_node_ip]
-    execute(update_authorized_keys,key=key,hosts=hosts)
+    #admin_node = cfg['admin_node']
+    #admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
+    #output = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
+    #key = output[admin_node_ip]
+    #execute(update_authorized_keys,key=key,hosts=hosts)
+    execute(update_dir,cfg['update_dir_list'],hosts=hosts)
+
+@task
+@parallel
+def update_dir(update_dir_list):
+
+    with mode_sudo():
+        for dir in update_dir_list:
+            owner = update_dir_list[dir]['owner']
+            mode = update_dir_list[dir]['mode']
+            dir_ensure(dir, mode=mode, owner=owner)
 
 @task
 @parallel
