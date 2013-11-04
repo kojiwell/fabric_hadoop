@@ -41,7 +41,7 @@ def update_etc_hosts(cfg_hosts):
         #        """
         #        |{0} {1}
         #        |""".format(cfg_hosts[host]['ipaddr'], host))
-        text = "{0} {1}".format(cfg_hosts[host]['ipaddr'], host))
+        text = "{0} {1}".format(cfg_hosts[host]['ipaddr'], host)
         with mode_sudo():
             file_append(file, text)
 
