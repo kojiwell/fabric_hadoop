@@ -31,8 +31,21 @@ def install():
 @parallel
 def update_config(cfg_name, cfg_list):
     """ Update xml files """
-    print 'cfg_name = ' + cfg_name
-    print cfg_list
+
+    lines = []
+    header = text_strip_margin(
+            """
+            |<?xml version="1.0"?>
+            |<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+            |
+            |<!-- Put site-specific property overrides in this file. -->
+            |
+            |<configuration>
+            |""")
+    lines.append(header)
+    for entry in cfg_list:
+        print entry
+
 
 @task
 @parallel
