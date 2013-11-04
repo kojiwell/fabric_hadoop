@@ -43,6 +43,7 @@ def update_config(cfg_name, cfg_list):
             |<configuration>
             |""")
     lines.append(header)
+
     for entry in cfg_list:
         property = text_strip_margin(
                 """
@@ -51,8 +52,14 @@ def update_config(cfg_name, cfg_list):
                 |    <value>{1}</value>
                 |  </property>
                 |""".format(entry, cfg_list[entry]))
-        print property
+        lines.append(property)
 
+    footer = '</configuration>\n'
+    lines.append(footer)
+
+    file = '/usr/lib/hadoop/conf/' + cfg_name + '.xml'
+    text = '\n'.join(lines) + '\n'
+    file_write(file, text, sudo=True)
 
 @task
 @parallel
