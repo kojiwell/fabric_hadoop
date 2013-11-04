@@ -37,7 +37,8 @@ def install():
 def update_env_sh():
 
     file = '/usr/lib/hadoop/conf/hadoop-env.sh'
-    file_update(file, _sub_update_env_sh)
+    with mode_sudo():
+        file_update(file, _sub_update_env_sh)
 
 def _sub_update_env_sh(text):
     """ Update /usr/lib/hadoop/conf/hadoop-env.sh"""
