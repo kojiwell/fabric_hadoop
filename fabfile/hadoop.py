@@ -1,16 +1,30 @@
 #!/usr/bin/env python
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
  
-import os
-import sys
-from fabric.api import *
-from fabric.contrib import *
-from fabric.operations import put, local
-from cuisine import *
+import yaml
+from fabric.api import task, run, sudo, put, task, \
+        parallel, execute
+from cuisine import file_exists
+
 
 @task
 @parallel
-def install_common():
+def install():
+
+    yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
+    f = open(yml_path)
+    cfg = yaml.safe_load(f)
+    f.close()
+
+    hosts = []
+    for host in cfg['hosts']:
+        hosts.append(cfg['hosts'][host]['ipaddr'])
+
+    execute(hello,hosts=hosts)
+
+@task
+@parallel
+def pkg_install():
     ''':hostname - Install Hadoop Master'''
     env.user = 'root'
     env.disable_known_hosts = True
@@ -27,16 +41,16 @@ def install_common():
     else:
         print '{0} exists. Oracle Java is already installed.'.format(file_name)
 
-    file_names = [
-            '/etc/hosts',
-            '/usr/lib/hadoop/conf/core-site.xml',
-            '/usr/lib/hadoop/conf/hdfs-site.xml',
-            '/usr/lib/hadoop/conf/mapred-site.xml',
-            '/usr/lib/hadoop/conf/hadoop-env.sh',
-            '/usr/lib/hadoop/conf/slaves'
-            ]
-    for file_name in file_names:
-        put('templates'+ file_name, file_name, use_sudo=True)
+    #file_names = [
+    #        '/etc/hosts',
+    #        '/usr/lib/hadoop/conf/core-site.xml',
+    #        '/usr/lib/hadoop/conf/hdfs-site.xml',
+    #        '/usr/lib/hadoop/conf/mapred-site.xml',
+    #        '/usr/lib/hadoop/conf/hadoop-env.sh',
+    #        '/usr/lib/hadoop/conf/slaves'
+    #        ]
+    #for file_name in file_names:
+    #    put('templates'+ file_name, file_name, use_sudo=True)
 
 @task
 @parallel
@@ -44,8 +58,6 @@ def enable_root_login():
 
     sudo('cat .ssh/authorized_keys > /root/.ssh/authorized_keys')
 
-@task
-@parallel
 def hello():
 
     run('hostname && id && echo hello')
