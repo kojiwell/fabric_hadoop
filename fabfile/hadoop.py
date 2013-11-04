@@ -59,6 +59,7 @@ def enable_root_login():
 
     sudo('cat .ssh/authorized_keys > /root/.ssh/authorized_keys')
 
+@parallel
 def hello():
 
     run('hostname && id && echo hello')
