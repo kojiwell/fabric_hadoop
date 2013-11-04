@@ -16,13 +16,13 @@ def install():
     cfg = yaml.safe_load(f)
     f.close()
 
-    env.user = cfg['remote_user']
+    user = cfg['remote_user']
 
     hosts = []
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
-    execute(hello,hosts=hosts)
+    execute(hello,user,hosts=hosts)
 
 @task
 @parallel
@@ -60,7 +60,8 @@ def enable_root_login():
 
     sudo('cat .ssh/authorized_keys > /root/.ssh/authorized_keys')
 
-def hello():
+def hello(user):
 
+    env.user = user
     run('hostname && id && echo hello')
 
