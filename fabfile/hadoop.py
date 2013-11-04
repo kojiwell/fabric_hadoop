@@ -44,7 +44,14 @@ def update_config(cfg_name, cfg_list):
             |""")
     lines.append(header)
     for entry in cfg_list:
-        print entry
+        property = text_strip_margin(
+                """
+                |  <property>
+                |    <name>{0}</name>
+                |    <value>{1}</value>
+                |  </property>
+                |""".format(entry, cfg_list[entry]))
+        print property
 
 
 @task
