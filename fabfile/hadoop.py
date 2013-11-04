@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
- 
+
+import os
 import yaml
 from fabric.api import task, run, sudo, put, task, \
         parallel, execute, env
@@ -11,18 +12,23 @@ from cuisine import file_exists, file_write, file_append, \
 @task
 def status():
     """ Check the status """
-    yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
-    f = open(yml_path)
+    # Read cofiguration file to cfg
+    cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
+    cfg_file = cfg_dir + '/hadoop.yml'
+    f = open(cfg_file)
     cfg = yaml.safe_load(f)
     f.close()
 
+    # Set ssh user and have ssh not check .ssh/known_hosts
     env.user = cfg['admin_user']
     env.disable_known_hosts = True
 
+    # Set hosts
     hosts = []
     for host in cfg['hosts']:
         hosts.append(cfg['hosts'][host]['ipaddr'])
 
+    # Execute check_status on the hosts.
     execute(check_status, hosts=hosts)
 
 def check_status():
@@ -32,8 +38,9 @@ def check_status():
 @task
 def install():
     """ Install Hadoop Cluster """
-    yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
-    f = open(yml_path)
+    cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
+    cfg_file = cfg_dir + '/hadoop.yml'
+    f = open(cfg_file)
     cfg = yaml.safe_load(f)
     f.close()
 
