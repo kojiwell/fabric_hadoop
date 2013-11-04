@@ -25,7 +25,6 @@ def status():
 
     execute(check_status, hosts=hosts)
 
-@parallel
 def check_status():
 
     sudo('jps', user='hdfs')
