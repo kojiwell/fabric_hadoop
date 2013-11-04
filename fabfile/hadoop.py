@@ -36,9 +36,6 @@ def install():
     execute(ssh_keygen,user='hdfs',keytype='rsa',hosts=[admin_node_ip])
 
 @task
-def key
-
-@task
 @parallel
 def update_env_sh():
 
