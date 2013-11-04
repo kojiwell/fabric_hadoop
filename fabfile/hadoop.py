@@ -25,7 +25,11 @@ def install():
     #execute(pkg_install,hosts=hosts)
     #execute(update_etc_hosts,cfg_hosts=cfg['hosts'],hosts=hosts)
     #execute(update_roles,cfg_hosts=cfg['hosts'],hosts=hosts)
-    execute(update_config,cfg_name='core-site',cfg_list=cfg['core-site'],hosts=hosts)
+    sites = ['core-site',
+             'hdfs-site',
+             'mapred-site']
+    for site in sites:
+        execute(update_config,cfg_name=site,cfg_list=cfg[site],hosts=hosts)
 
 @task
 @parallel
