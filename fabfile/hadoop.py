@@ -27,7 +27,6 @@ def install():
 @parallel
 def pkg_install():
     ''':hostname - Install Hadoop Master'''
-    env.user = 'root'
     env.disable_known_hosts = True
 
     file_name = '/usr/lib/jvm/java-7-oracle'
