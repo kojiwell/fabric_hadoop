@@ -44,7 +44,7 @@ hdfs-site:
 
 mapred-site:
   mapred.job.tracker: hadoop01:8021
-  #mapred.local.dir: /data00/mapred/local,/data01/mapred/local,/data02/mapred/local,/data03/mapred/local,/data04/mapred/local,/data05/mapred/local
+  mapred.local.dir: /data00/mapred/local,/data01/mapred/local,/data02/mapred/local,/data03/mapred/local,/data04/mapred/local,/data05/mapred/local
   mapreduce.jobtracker.staging.root.dir: /user
   mapred.child.java.opts: -Xmx1024m
   mapred.tasktracker.map.tasks.maximum: 6
