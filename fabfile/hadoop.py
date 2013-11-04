@@ -36,9 +36,13 @@ def install():
     admin_node_ip = cfg['hosts'][admin_node]['ipaddr']
     output = execute(create_hdfs_sshkey,hosts=[admin_node_ip])
     key = output[admin_node_ip]
+    execute(update_authorized_keys,key=key,hosts=hosts)
+
+@task
+@parallel
+def update_authorized_keys(key):
     with mode_sudo():
-        @parallel
-        execute(ssh_authorize,user='hdfs',key=key,hosts=hosts)
+        ssh_authorize(user='hdfs',key=key)
 
 @task
 def create_hdfs_sshkey():
