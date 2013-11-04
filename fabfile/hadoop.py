@@ -35,7 +35,7 @@ def update_etc_hosts(cfg_hosts):
     lines.append("127.0.0.1 localhost")
     for host in cfg_hosts:
         lines.append("{0} {1}".format(cfg_hosts[host]['ipaddr'], host))
-    text = '\n'.join(lines)
+    text = '\n'.join(lines) + '\n'
     file_write(file, text, sudo=True)
 
 @task
