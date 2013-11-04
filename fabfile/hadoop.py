@@ -35,14 +35,14 @@ def update_etc_hosts(cfg_hosts):
     #        """
     #        |127.0.0.1 localhost
     #        |""")
-    text = "127.0.0.1 localhost"
+    text = "127.0.0.1 localhost\n"
     file_write(file, text, sudo=True)
     for host in cfg_hosts:
         #text = text_strip_margin(
         #        """
         #        |{0} {1}
         #        |""".format(cfg_hosts[host]['ipaddr'], host))
-        text = "{0} {1}".format(cfg_hosts[host]['ipaddr'], host)
+        text = "{0} {1}\n".format(cfg_hosts[host]['ipaddr'], host)
         with mode_sudo():
             file_append(file, text)
 
