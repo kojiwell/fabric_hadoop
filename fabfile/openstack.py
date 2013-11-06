@@ -26,8 +26,8 @@ def up():
 
     # Check if fingerprint exists on the list
     with settings(warn_only=True):
-        test = local('nova keypair-list|grep {}'.format(fingerprint)).return_code
-    print 'test = {}'.format(test)
+        test = local('nova keypair-list|grep {}'.format(fingerprint))
+    print test.return_code
 
 def read_ymlfile(file_name):
     """ Check the status """
