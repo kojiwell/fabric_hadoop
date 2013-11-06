@@ -17,7 +17,7 @@ def up():
     cfg = read_ymlfile('openstack.yml')
     
     # Get absolute path of public key
-    key_file = os.path.abspath(cfg['key_file'])
+    key_file = os.path.normpath(cfg['key_file'])
     print key_file
 
     # Check if file exist
