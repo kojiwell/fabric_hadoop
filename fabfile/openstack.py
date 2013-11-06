@@ -4,7 +4,7 @@
 import os
 import yaml
 from fabric.api import task, run, sudo, put, task, \
-        parallel, execute, env
+        parallel, execute, env, local
 from cuisine import file_exists, file_write, file_append, \
         text_strip_margin, mode_sudo, file_update, ssh_keygen, \
         ssh_authorize, dir_ensure
