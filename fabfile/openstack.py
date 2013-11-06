@@ -18,7 +18,6 @@ def up():
     
     # Get absolute path of public key
     key_file = os.path.abspath(os.path.expanduser(cfg['key_file']))
-    print key_file
 
     # Check if file exist
     if not os.path.exists(key_file):
@@ -27,7 +26,10 @@ def up():
 
     # Get fingerprint
     fingerprint = local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(key_file), capture=1)
-    print "finger print is {}".format(fingerprint)
+
+    # Check if fingerprint exists on the list
+    test = local('nova keypair-list|grep {}'.format(fingerprint), capture=1)
+    print 'test = {}'.format(test)
 
 def read_ymlfile(file_name):
     """ Check the status """
