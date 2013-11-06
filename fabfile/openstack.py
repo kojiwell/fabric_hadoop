@@ -32,7 +32,7 @@ def read_ymlfile(file_name):
     """ Check the status """
     # Read cofiguration file to cfg
     cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
-    cfg_file = cfg_dir + '{0}/{1}'.format(cfg_dir, file_name)
+    cfg_file = '{0}/{1}'.format(cfg_dir, file_name)
     f = open(cfg_file)
     cfg = yaml.safe_load(f)
     f.close()
