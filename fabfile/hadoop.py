@@ -180,9 +180,23 @@ def pkg_install():
 
 @task
 @parallel
-def enable_root_login():
+def check_online():
 
     sudo('cat .ssh/authorized_keys > /root/.ssh/authorized_keys')
+
+    yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
+    f = open(yml_path)
+    cfg = yaml.safe_load(f)
+    f.close()
+
+    env.user = cfg['admin_user']
+    env.disable_known_hosts = True
+
+    hosts = []
+    for host in cfg['hosts']:
+        hosts.append(cfg['hosts'][host]['ipaddr'])
+
+    execute(hello,hosts=hosts)
 
 @parallel
 def hello():
