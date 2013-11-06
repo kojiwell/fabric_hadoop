@@ -16,6 +16,9 @@ def up():
     # Check if fingerprint exists on the list
     op.check_key()
 
+    # Check if image exists
+    op.check_image()
+
 class OpenStack:
 
     def __init__(self):
@@ -31,7 +34,8 @@ class OpenStack:
                 local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(self.cfg['key_file']), capture=True)
 
     def check_key(self):
-
+        print "==> Checking the key..."
+        sleep(1)
         if not os.path.exists(self.cfg['key_file']):
             print "{} doesn't exist".format(self.cfg['key_file'])
             exit(1)
@@ -45,5 +49,6 @@ class OpenStack:
             print "your key is already registered with a different name."
             exit(1)
 
-    #def check_image(self):
-    #    with settings(warn_only=True):
+    def check_image(self):
+        with settings(warn_only=True):
+            pass
