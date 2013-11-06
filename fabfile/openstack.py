@@ -20,11 +20,11 @@ class OpenStack:
 
     def __init__(self):
 
-        self.cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
-        self.cfg_file = '{0}/{1}'.format(cfg_dir, 'openstack.yml')
+        cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
+        cfg_file = '{0}/{1}'.format(cfg_dir, 'openstack.yml')
         f = open(cfg_file)
         self.cfg = yaml.safe_load(f)
-        self.cfg['key_file'] = os.path.abspath(os.path.expanduser(cfg['key_file']))
+        self.cfg['key_file'] = os.path.abspath(os.path.expanduser(self.cfg['key_file']))
         f.close()
 
         self.key_fingerprint = \
