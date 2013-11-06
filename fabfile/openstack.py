@@ -14,7 +14,7 @@ def up():
     op = OpenStack()
     
     # Check if fingerprint exists on the list
-    op.check_key(cfg)
+    op.check_key()
 
 class OpenStack:
 
@@ -25,9 +25,10 @@ class OpenStack:
         f = open(cfg_file)
         cfg = yaml.safe_load(f)
         cfg['key_file'] = os.path.abspath(os.path.expanduser(cfg['key_file']))
-        key_fingerprint = \
-                local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(key_file), capture=True)
         f.close()
+
+        key_fingerprint = \
+                local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(cfg['key_file']), capture=True)
 
     def check_key(self):
 
