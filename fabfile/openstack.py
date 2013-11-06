@@ -20,28 +20,28 @@ class OpenStack:
 
     def __init__(self):
 
-        cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
-        cfg_file = '{0}/{1}'.format(cfg_dir, 'openstack.yml')
+        self.cfg_dir = os.path.dirname(__file__).replace('fabfile','ymlfile')
+        self.cfg_file = '{0}/{1}'.format(cfg_dir, 'openstack.yml')
         f = open(cfg_file)
-        cfg = yaml.safe_load(f)
-        cfg['key_file'] = os.path.abspath(os.path.expanduser(cfg['key_file']))
+        self.cfg = yaml.safe_load(f)
+        self.cfg['key_file'] = os.path.abspath(os.path.expanduser(cfg['key_file']))
         f.close()
 
-        key_fingerprint = \
+        self.key_fingerprint = \
                 local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(cfg['key_file']), capture=True)
 
     def check_key(self):
 
-        if not os.path.exists(cfg['key_file']):
-            print "{} doesn't exist".format(cfg['key_file'])
+        if not os.path.exists(self.cfg['key_file']):
+            print "{} doesn't exist".format(self.cfg['key_file'])
             exit(1)
 
         with settings(warn_only=True):
-            output = local('nova keypair-list|grep {}'.format(key_fingerprint))
+            output = local('nova keypair-list|grep {}'.format(self.key_fingerprint))
         if not output.return_code == 0:
             print "ERROR: your key is not registered yet."
             exit(1)
-        if not output.split()[1] == cfg['key_name']:
+        if not output.split()[1] == self.cfg['key_name']:
             print "your key is already registered with a different name."
             exit(1)
 
