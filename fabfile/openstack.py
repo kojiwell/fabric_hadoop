@@ -3,11 +3,8 @@
 
 import os
 import yaml
-from fabric.api import task, run, sudo, put, task, \
-        parallel, execute, env, local
-from cuisine import file_exists, file_write, file_append, \
-        text_strip_margin, mode_sudo, file_update, ssh_keygen, \
-        ssh_authorize, dir_ensure
+from fabric.api import task, local, settings, warn_only
+from cuisine import file_exists,
 
 @task
 def up():
@@ -25,10 +22,11 @@ def up():
         exit(1)
 
     # Get fingerprint
-    fingerprint = local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(key_file), capture=1)
+    fingerprint = local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(key_file), capture=True)
 
     # Check if fingerprint exists on the list
-    test = local('nova keypair-list|grep {}'.format(fingerprint), capture=1)
+    with settings(warn_only=True):
+        test = local('nova keypair-list|grep {}'.format(fingerprint)).return_code
     print 'test = {}'.format(test)
 
 def read_ymlfile(file_name):
