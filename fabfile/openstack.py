@@ -38,7 +38,7 @@ class OpenStack:
 
         with settings(warn_only=True):
             output = local('nova keypair-list|grep {}'.format(self.key_fingerprint))
-            print output, output.return_code,
+            print '#### ', output
         if not output.return_code == 0:
             print "ERROR: your key is not registered yet."
             exit(1)
