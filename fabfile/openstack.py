@@ -28,7 +28,7 @@ class OpenStack:
         f.close()
 
         self.key_fingerprint = \
-                local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(cfg['key_file']), capture=True)
+                local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(self.cfg['key_file']), capture=True)
 
     def check_key(self):
 
