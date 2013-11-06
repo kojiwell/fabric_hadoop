@@ -188,8 +188,6 @@ def pkg_install():
 @parallel
 def check_online():
 
-    sudo('cat .ssh/authorized_keys > /root/.ssh/authorized_keys')
-
     yml_path = __file__.replace('fabfile','ymlfile').rstrip(r'\py|\pyc') + 'yml'
     f = open(yml_path)
     cfg = yaml.safe_load(f)
