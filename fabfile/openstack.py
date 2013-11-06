@@ -4,7 +4,7 @@
 import os
 import yaml
 from fabric.api import task, local, settings, warn_only
-from cuisine import file_exists,
+from cuisine import file_exists
 
 @task
 def up():
