@@ -1,0 +1,8 @@
+# ymlfile/openstack.yml
+
+image: ubuntu-12.04
+flavor: m1.small
+key_name: mykey
+key_file: ~/.ssh/id_rsa.pub
+cluster_name: hadoop
+number_of_nodes: 5
