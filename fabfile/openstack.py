@@ -26,7 +26,7 @@ def up():
         exit(1)
 
     # Get fingerprint
-    fingerprint = local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(key_file))
+    fingerprint = local('ssh-keygen -l -f {}|awk \'{{print $2}}\''.format(key_file), capture=1)
     print "finger print is {}".format(fingerprint)
 
 def read_ymlfile(file_name):
